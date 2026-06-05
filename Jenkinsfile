@@ -1,12 +1,9 @@
-ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-
-cat > Jenkinsfile <<EOF
 pipeline {
     agent any
 
     environment {
         AWS_REGION      = 'ap-south-1'
-        ECR_REPO        = '${ACCOUNT_ID}.dkr.ecr.ap-south-1.amazonaws.com/my-app'
+        ECR_REPO        = '099751327159.dkr.ecr.ap-south-1.amazonaws.com/my-app'
         CLUSTER_NAME    = 'my-cluster'
         KUBECONFIG      = '/opt/jenkins/home/.kube/config'
         AWS_SHARED_CREDENTIALS_FILE = '/opt/jenkins/home/.aws/credentials'
@@ -25,8 +22,8 @@ pipeline {
         stage('2 - Build Docker Image') {
             steps {
                 sh """
-                    docker build -t \${ECR_REPO}:\${BUILD_NUMBER} .
-                    docker tag \${ECR_REPO}:\${BUILD_NUMBER} \${ECR_REPO}:latest
+                    docker build -t ${ECR_REPO}:${BUILD_NUMBER} .
+                    docker tag ${ECR_REPO}:${BUILD_NUMBER} ${ECR_REPO}:latest
                 """
             }
         }
@@ -34,7 +31,7 @@ pipeline {
         stage('3 - Test') {
             steps {
                 sh """
-                    docker run --rm \${ECR_REPO}:\${BUILD_NUMBER} npm test
+                    docker run --rm ${ECR_REPO}:${BUILD_NUMBER} npm test
                 """
             }
         }
@@ -42,10 +39,10 @@ pipeline {
         stage('4 - Push to ECR') {
             steps {
                 sh """
-                    aws ecr get-login-password --region \${AWS_REGION} \\
-                      | docker login --username AWS --password-stdin \${ECR_REPO}
-                    docker push \${ECR_REPO}:\${BUILD_NUMBER}
-                    docker push \${ECR_REPO}:latest
+                    aws ecr get-login-password --region ${AWS_REGION} \
+                      | docker login --username AWS --password-stdin ${ECR_REPO}
+                    docker push ${ECR_REPO}:${BUILD_NUMBER}
+                    docker push ${ECR_REPO}:latest
                 """
             }
         }
@@ -53,10 +50,10 @@ pipeline {
         stage('5 - Update kubeconfig') {
             steps {
                 sh """
-                    aws eks update-kubeconfig \\
-                      --name \${CLUSTER_NAME} \\
-                      --region \${AWS_REGION} \\
-                      --kubeconfig \${KUBECONFIG}
+                    aws eks update-kubeconfig \
+                      --name ${CLUSTER_NAME} \
+                      --region ${AWS_REGION} \
+                      --kubeconfig ${KUBECONFIG}
                 """
             }
         }
@@ -64,11 +61,11 @@ pipeline {
         stage('6 - Deploy with Helm') {
             steps {
                 sh """
-                    helm upgrade --install my-app ./helm-chart \\
-                      --set image.repository=\${ECR_REPO} \\
-                      --set image.tag=\${BUILD_NUMBER} \\
-                      --namespace default \\
-                      --wait \\
+                    helm upgrade --install my-app ./helm-chart \
+                      --set image.repository=${ECR_REPO} \
+                      --set image.tag=${BUILD_NUMBER} \
+                      --namespace default \
+                      --wait \
                       --timeout 5m
                 """
             }
@@ -86,7 +83,7 @@ pipeline {
 
     post {
         success {
-            echo "Deployment successful! Image: \${ECR_REPO}:\${BUILD_NUMBER}"
+            echo "Deployment successful!"
         }
         failure {
             echo "Pipeline failed! Rolling back..."
@@ -97,4 +94,3 @@ pipeline {
         }
     }
 }
-EOF
