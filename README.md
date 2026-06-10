@@ -148,6 +148,7 @@
   To roll back manually:
 
   - bash
+    
   helm rollback my-app 1
 
   Monitoring
@@ -165,6 +166,7 @@
   Access Grafana:
   --------------
   - bash
+    
   kubectl port-forward svc/monitoring-grafana 3000:80 -n monitoring --address 0.0.0.0 &
 
   Open "http://<EC2-IP>:3000" and log in 
@@ -172,24 +174,31 @@
   Key Commands:
 
   - Check running pods
+    
   kubectl get pods
 
   - Check the load balancer URL
+    
   kubectl get svc my-app
 
   - Check auto-scaler status
+    
   kubectl get hpa
 
   - View deployment history
+    
   helm history my-app
 
   - Roll back to previous version
+    
   helm rollback my-app 1
 
   - Check node resource usage
+    
   kubectl top nodes
 
   - Check pod resource usage
+    
   kubectl top pods
 
   Results:
