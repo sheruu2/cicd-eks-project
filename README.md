@@ -1,6 +1,6 @@
 # Production-Grade CI/CD Pipeline with EKS and Helm
 
-A fully automated CI/CD pipeline built on AWS. When a developer pushes code to GitHub, Jenkins automatically builds, tests, and deploys the application to Kubernetes — with zero downtime.
+A fully automated CI/CD pipeline built on AWS. When a developer pushes code to GitHub, Jenkins automatically builds, tests, and deploys the application to Kubernetes - with zero downtime.
 
 ---
 
@@ -46,10 +46,10 @@ A fully automated CI/CD pipeline built on AWS. When a developer pushes code to G
 ### Kubernetes
 | Tool | Purpose |
 |---|---|
-| EKS | Managed Kubernetes — AWS handles the control plane |
+| EKS | Managed Kubernetes - AWS handles the control plane |
 | eksctl | Command line tool to create the EKS cluster |
 | kubectl | Command line tool to manage pods and deployments |
-| Helm | Package manager for Kubernetes — handles deployments and rollbacks |
+| Helm | Package manager for Kubernetes - handles deployments and rollbacks |
 | Deployment | Runs 2 copies of the app, updates with zero downtime |
 | Service | Routes traffic to the running pods |
 | HPA | Auto-scales pods from 2 to 10 based on CPU usage |
@@ -161,8 +161,8 @@ Prometheus and Grafana are installed on the cluster using Helm.
 **Grafana dashboards include:**
 - Kubernetes cluster CPU and memory overview
 - Per-pod resource usage
-- Node Exporter — EC2 worker node metrics
-- HPA status — how many pods are running
+- Node Exporter - EC2 worker node metrics
+- HPA status - how many pods are running
 
 **Access Grafana:**
 ```bash
