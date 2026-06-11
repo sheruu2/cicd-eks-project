@@ -97,13 +97,13 @@ cicd-eks-project/
 Every time code is pushed to GitHub, Jenkins runs these 7 stages automatically:
 
 ```
-Stage 1 — Checkout      Pull the latest code from GitHub
-Stage 2 — Build         Build a Docker image tagged with the build number
-Stage 3 — Test          Run unit tests inside the container
-Stage 4 — Push          Push the image to Amazon ECR
-Stage 5 — Kubeconfig    Authenticate with the EKS cluster
-Stage 6 — Deploy        Run helm upgrade to deploy the new image to Kubernetes
-Stage 7 — Verify        Check that all pods are healthy before marking success
+Stage 1 - Checkout      Pull the latest code from GitHub
+Stage 2 - Build         Build a Docker image tagged with the build number
+Stage 3 - Test          Run unit tests inside the container
+Stage 4 - Push          Push the image to Amazon ECR
+Stage 5 - Kubeconfig    Authenticate with the EKS cluster
+Stage 6 - Deploy        Run helm upgrade to deploy the new image to Kubernetes
+Stage 7 - Verify        Check that all pods are healthy before marking success
 ```
 
 > If any stage fails, Jenkins automatically rolls back to the previous version.
@@ -115,11 +115,11 @@ Stage 7 — Verify        Check that all pods are healthy before marking success
 ### VPC Layout
 
 ```
-VPC — 10.0.0.0/16 (ap-south-1)
-├── Public Subnet 1  (ap-south-1a) — Jenkins EC2, ALB
-├── Public Subnet 2  (ap-south-1b) — ALB (multi-AZ)
-├── Private Subnet 1 (ap-south-1a) — EKS Node 1
-└── Private Subnet 2 (ap-south-1b) — EKS Node 2
+VPC - 10.0.0.0/16 (ap-south-1)
+├── Public Subnet 1  (ap-south-1a) - Jenkins EC2, ALB
+├── Public Subnet 2  (ap-south-1b) - ALB (multi-AZ)
+├── Private Subnet 1 (ap-south-1a) - EKS Node 1
+└── Private Subnet 2 (ap-south-1b) - EKS Node 2
 ```
 
 ### EKS Cluster
@@ -141,10 +141,10 @@ VPC — 10.0.0.0/16 (ap-south-1)
 When a new version is deployed, Kubernetes performs a rolling update:
 
 ```
-Step 1 — New pods start with the new version
-Step 2 — Health checks run on the new pods
-Step 3 — Once healthy, old pods are removed
-Step 4 — No downtime at any point
+Step 1 - New pods start with the new version
+Step 2 - Health checks run on the new pods
+Step 3 - Once healthy, old pods are removed
+Step 4 - No downtime at any point
 ```
 
 To roll back manually:
